@@ -6,11 +6,9 @@ import (
 	"net/http"
 	"os"
 	"regexp"
-	"time"
 )
 
-var defaultString := os.Getenv("DEFSTR")
-var regexExpresation, _ := regexp.Compile("[*]")
+var regexExpresation, _ = regexp.Compile("[*]")
 
 func Router(w http.ResponseWriter, r *http.Request) {
 	log.Println("URI: " + r.URL.Path)
@@ -34,11 +32,13 @@ func defaultHandler(w http.ResponseWriter, r *http.Request) {
 
 		log.Println("Request body: " + string(content))
 
-		
-		tm := time.Now().Format(time.RFC1123)
+		defaultString := os.Getenv("DEFSTR")
 
 		if defaultString == "" {
-		w.Write([]byte("The time is: " + tm))
+			// tm := time.Now().Format(time.RFC1123)
+			// w.Write([]byte("The time is: " + tm))
+
+			log.Println("The environment variable defaultString was not initialized")
 		} else {
 			w.Write([]byte(defaultString))
 		}
