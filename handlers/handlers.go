@@ -4,11 +4,13 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 	"time"
 )
 
-var regexExpresation, _ = regexp.Compile("[*]")
+var defaultString := os.Getenv("DEFSTR")
+var regexExpresation, _ := regexp.Compile("[*]")
 
 func Router(w http.ResponseWriter, r *http.Request) {
 	log.Println("URI: " + r.URL.Path)
@@ -32,8 +34,14 @@ func defaultHandler(w http.ResponseWriter, r *http.Request) {
 
 		log.Println("Request body: " + string(content))
 
+		
 		tm := time.Now().Format(time.RFC1123)
+
+		if defaultString == "" {
 		w.Write([]byte("The time is: " + tm))
+		} else {
+			w.Write([]byte(defaultString))
+		}
 
 	} else {
 		log.Println("Received a request with a different content type. Type: " + r.Header.Get("Content-type"))
